@@ -61,7 +61,7 @@ Index: target/linux/brcm47xx/base-files/etc/init.d/netconfig
  			c["vlan1ports"] = "0 1 2 3 5t"
  			c["vlan2ports"] = "4 5t"
  		}
-+		if (model == "Belkin PlayMax F7D4401") {
++		if (model == "Belkin F7D4401") {
 +			c["vlan0ports"] = "0 1 2 3 8*"
 +			c["vlan1ports"] = "4 8"
 +		}
@@ -255,7 +255,7 @@ Index: package/broadcom-diag/src/diag.c
  		},
  	},
 +	[BELKIN_F7D4401] = {
-+		.name		= "Belkin PlayMax F7D4401",
++		.name		= "Belkin F7D4401",
 +		.buttons	= {
 +			{ .name = "reset",	.gpio = 1 << 6 },
 +			{ .name = "wps",	.gpio = 1 << 8 },
