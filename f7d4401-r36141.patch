@@ -186,7 +186,7 @@ Index: package/broadcom-diag/src/diag.c
 +		.leds		= {
 +			{ .name = "power", 	.gpio = 1 << 10, .polarity = REVERSE },
 +                       { .name = "diag",       .gpio = 1 << 11, .polarity = REVERSE },
-+	               { .name = "wlan",       .gpio = 1 << 12, .polarity = REVERSE },
++                       { .name = "wlan",       .gpio = 1 << 12, .polarity = REVERSE },
 +                       { .name = "wlan_red",   .gpio = 1 << 13, .polarity = REVERSE },
 +                       { .name = "led_usb0",   .gpio = 1 << 14, .polarity = REVERSE },
 +                       { .name = "led_usb1",   .gpio = 1 << 15, .polarity = REVERSE },		
