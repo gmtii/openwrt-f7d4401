@@ -189,7 +189,7 @@ Index: package/broadcom-diag/src/diag.c
 +                       { .name = "wlan",       .gpio = 1 << 12, .polarity = REVERSE },
 +                       { .name = "wlan_red",   .gpio = 1 << 13, .polarity = REVERSE },
 +                       { .name = "led_usb0",   .gpio = 1 << 14, .polarity = REVERSE },
-+                       { .name = "led_usb1",   .gpio = 1 << 15, .polarity = REVERSE },		
++                       { .name = "led_usb1",   .gpio = 1 << 15, .polarity = REVERSE },
 +		},
 +	},
  	/* Netgear */
