@@ -1,26 +1,6 @@
---- /dev/null 2013-04-01 14:44:08.380532924 +0100
-+++ target/linux/brcm47xx/profiles/226-Broadcom-bgmac-brcmsmac.mk	2013-04-07 16:11:02.243273546 +0100
-@@ -0,0 +1,18 @@
-+#
-+# Copyright (C) 2006-2013 OpenWrt.org
-+#
-+# This is free software, licensed under the GNU General Public License v2.
-+# See /LICENSE for more information.
-+#
-+
-+define Profile/Broadcom-bgmac-brcmsmac
-+  NAME:=Broadcom SoC, bgmac Ethernet, brcmsmac Wifi
-+  PACKAGES:=kmod-brcmsmac wpad-mini kmod-bgmac -kmod-brcm-wl -wlc -nas
-+endef
-+
-+define Profile/Broadcom-bgmac-none/Description
-+	Package set compatible with hardware newer Broadcom BCM47xx or BCM535x 
-+	SoC with dual 4716 and 43224 Wifi cards brcmsmac driver and bgmac Ethernet driver.
-+endef
-+$(eval $(call Profile,Broadcom-bgmac-brcmsmac))
 Index: target/linux/brcm47xx/image/lzma-loader/src/decompress.c
 ===================================================================
---- target/linux/brcm47xx/image/lzma-loader/src/decompress.c  (revisión: 36240)
+--- target/linux/brcm47xx/image/lzma-loader/src/decompress.c (revisión: 36240)
 +++ target/linux/brcm47xx/image/lzma-loader/src/decompress.c	(copia de trabajo)
 @@ -78,6 +78,7 @@
  }
@@ -60,6 +40,29 @@ Index: target/linux/brcm47xx/image/Makefile
  	$(call Image/Build/$(1),$(1))
  	$(call Image/Build/Motorola,$(1),wr850g,1,$(1))
  	$(call Image/Build/USR,$(1),usr5461,$(1))
+Index: target/linux/brcm47xx/profiles/226-Broadcom-bgmac-brcmsmac.mk
+===================================================================
+--- target/linux/brcm47xx/profiles/226-Broadcom-bgmac-brcmsmac.mk	(revisión: 0)
++++ target/linux/brcm47xx/profiles/226-Broadcom-bgmac-brcmsmac.mk	(revisión: 0)
+@@ -0,0 +1,18 @@
++#
++# Copyright (C) 2006-2013 OpenWrt.org
++#
++# This is free software, licensed under the GNU General Public License v2.
++# See /LICENSE for more information.
++#
++
++define Profile/Broadcom-bgmac-brcmsmac
++  NAME:=Broadcom SoC, bgmac Ethernet, brcmsmac (F7D4401)
++  PACKAGES:=kmod-brcmsmac wpad-mini kmod-bgmac -kmod-brcm-wl -wlc -nas
++endef
++
++define Profile/Broadcom-bgmac-none/Description
++	Package set compatible with hardware newer Broadcom BCM47xx or BCM535x 
++	SoC with dual 4716 and 43224 Wifi cards and bgmac Ethernet driver.
++endef
++$(eval $(call Profile,Broadcom-bgmac-brcmsmac))
++
 Index: target/linux/brcm47xx/base-files/etc/init.d/netconfig
 ===================================================================
 --- target/linux/brcm47xx/base-files/etc/init.d/netconfig	(revisión: 36240)
@@ -84,9 +87,52 @@ Index: target/linux/brcm47xx/base-files/etc/init.d/netconfig
  		print "	option netmask	255.255.255.0"
  		print ""
  		print ""
+Index: target/linux/brcm47xx/patches-3.6/260-MIPS-BCM47XX-add-board-detection.patch
+===================================================================
+--- target/linux/brcm47xx/patches-3.6/260-MIPS-BCM47XX-add-board-detection.patch	(revisión: 36244)
++++ target/linux/brcm47xx/patches-3.6/260-MIPS-BCM47XX-add-board-detection.patch	(copia de trabajo)
+@@ -8,7 +8,7 @@
+  obj-$(CONFIG_BCM47XX_SSB)	+= wgt634u.o
+ --- /dev/null
+ +++ b/arch/mips/bcm47xx/board.c
+-@@ -0,0 +1,222 @@
++@@ -0,0 +1,223 @@
+ +#include <linux/export.h>
+ +#include <linux/string.h>
+ +#include <bcm47xx_board.h>
+@@ -46,6 +46,7 @@
+ +	{{BCM47XX_BOARD_ASUS_WL520GC, "Asus WL520GC"}, "WL520GC-",},
+ +	{{BCM47XX_BOARD_ASUS_WL520GU, "Asus WL520GU"}, "WL520GU-",},
+ +	{{BCM47XX_BOARD_BELKIN_F7D4301, "Belkin F7D4301"}, "F7D4301",},
+++	{{BCM47XX_BOARD_BELKIN_F7D4401, "Belkin F7D4401"}, "F7D4401",},
+ +	{ {0}, 0},
+ +};
+ +
+@@ -233,7 +234,7 @@
+ +EXPORT_SYMBOL(bcm47xx_board_get_name);
+ --- /dev/null
+ +++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
+-@@ -0,0 +1,90 @@
++@@ -0,0 +1,91 @@
+ +#ifndef __BCM47XX_BOARD_H
+ +#define __BCM47XX_BOARD_H
+ +
+@@ -258,6 +259,7 @@
+ +	BCM47XX_BOARD_ASUS_WL700GE,
+ +
+ +	BCM47XX_BOARD_BELKIN_F7D4301,
+++	BCM47XX_BOARD_BELKIN_F7D4401,
+ +
+ +	BCM47XX_BOARD_BUFFALO_WBR2_G54,
+ +	BCM47XX_BOARD_BUFFALO_WHR2_A54G54,
+@@ -324,3 +326,4 @@
+ +extern const char *bcm47xx_board_get_name(void);
+ +
+ +#endif /* __BCM47XX_BOARD_H */
++
 Index: target/linux/brcm47xx/patches-3.6/050-mtd-add-bcm47xx-part-parser.patch
 ===================================================================
---- target/linux/brcm47xx/patches-3.6/050-mtd-add-bcm47xx-part-parser.patch	(revisión: 36240)
+--- target/linux/brcm47xx/patches-3.6/050-mtd-add-bcm47xx-part-parser.patch	(revisión: 36244)
 +++ target/linux/brcm47xx/patches-3.6/050-mtd-add-bcm47xx-part-parser.patch	(copia de trabajo)
 @@ -26,7 +26,7 @@
   obj-$(CONFIG_MTD_CHAR)		+= mtdchar.o
@@ -137,49 +183,6 @@ Index: target/linux/brcm47xx/patches-3.6/050-mtd-add-bcm47xx-part-parser.patch
  +
  +MODULE_LICENSE("GPL");
  +MODULE_DESCRIPTION("Parsing code for flash partitions on bcm47xx SoCs");
-+
-Index: target/linux/brcm47xx/patches-3.6/260-MIPS-BCM47XX-add-board-detection.patch
-===================================================================
---- target/linux/brcm47xx/patches-3.6/260-MIPS-BCM47XX-add-board-detection.patch	(revisión: 36240)
-+++ target/linux/brcm47xx/patches-3.6/260-MIPS-BCM47XX-add-board-detection.patch	(copia de trabajo)
-@@ -8,7 +8,7 @@
-  obj-$(CONFIG_BCM47XX_SSB)	+= wgt634u.o
- --- /dev/null
- +++ b/arch/mips/bcm47xx/board.c
--@@ -0,0 +1,222 @@
-+@@ -0,0 +1,223 @@
- +#include <linux/export.h>
- +#include <linux/string.h>
- +#include <bcm47xx_board.h>
-@@ -46,6 +46,7 @@
- +	{{BCM47XX_BOARD_ASUS_WL520GC, "Asus WL520GC"}, "WL520GC-",},
- +	{{BCM47XX_BOARD_ASUS_WL520GU, "Asus WL520GU"}, "WL520GU-",},
- +	{{BCM47XX_BOARD_BELKIN_F7D4301, "Belkin F7D4301"}, "F7D4301",},
-++	{{BCM47XX_BOARD_BELKIN_F7D4401, "Belkin F7D4401"}, "F7D4401",},
- +	{ {0}, 0},
- +};
- +
-@@ -233,7 +234,7 @@
- +EXPORT_SYMBOL(bcm47xx_board_get_name);
- --- /dev/null
- +++ b/arch/mips/include/asm/mach-bcm47xx/bcm47xx_board.h
--@@ -0,0 +1,90 @@
-+@@ -0,0 +1,91 @@
- +#ifndef __BCM47XX_BOARD_H
- +#define __BCM47XX_BOARD_H
- +
-@@ -258,6 +259,7 @@
- +	BCM47XX_BOARD_ASUS_WL700GE,
- +
- +	BCM47XX_BOARD_BELKIN_F7D4301,
-++	BCM47XX_BOARD_BELKIN_F7D4401,
- +
- +	BCM47XX_BOARD_BUFFALO_WBR2_G54,
- +	BCM47XX_BOARD_BUFFALO_WHR2_A54G54,
-@@ -324,3 +326,4 @@
- +extern const char *bcm47xx_board_get_name(void);
- +
- +#endif /* __BCM47XX_BOARD_H */
 +
 Index: package/broadcom-diag/src/diag.c
 ===================================================================
