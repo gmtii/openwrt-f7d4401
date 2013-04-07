@@ -1,3 +1,23 @@
+--- /dev/null 2013-04-01 14:44:08.380532924 +0100
++++ target/linux/brcm47xx/profiles/226-Broadcom-bgmac-brcmsmac.mk	2013-04-07 16:11:02.243273546 +0100
+@@ -0,0 +1,18 @@
++#
++# Copyright (C) 2006-2013 OpenWrt.org
++#
++# This is free software, licensed under the GNU General Public License v2.
++# See /LICENSE for more information.
++#
++
++define Profile/Broadcom-bgmac-brcmsmac
++  NAME:=Broadcom SoC, bgmac Ethernet, brcmsmac Wifi
++  PACKAGES:=kmod-brcmsmac wpad-mini kmod-bgmac -kmod-brcm-wl -wlc -nas
++endef
++
++define Profile/Broadcom-bgmac-none/Description
++	Package set compatible with hardware newer Broadcom BCM47xx or BCM535x 
++	SoC with dual 4716 and 43224 Wifi cards brcmsmac driver and bgmac Ethernet driver.
++endef
++$(eval $(call Profile,Broadcom-bgmac-brcmsmac))
 Index: target/linux/brcm47xx/image/lzma-loader/src/decompress.c
 ===================================================================
 --- target/linux/brcm47xx/image/lzma-loader/src/decompress.c  (revisión: 36240)
